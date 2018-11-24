@@ -4,20 +4,31 @@
 typedef struct Kerdesek
 {
     int nehezseg;
-    char kerdes[150];
-    char a[30];
-    char b[30];
-    char c[30];
-    char d[30];
+    char kerdes[250];
+    char a[40];
+    char b[40];
+    char c[40];
+    char d[40];
     char valasz;
-    char temakor[20];
+    char temakor[30];
+    struct Kerdesek *kov;
 } Kerdesek;
 
-void beolvasas(Kerdesek *beol);
-char segitseg(char betu, int random, Kerdesek *beolvas);
-bool helyes_e(char betu, Kerdesek *beolvas, int random);
-void jatekindit(void);
+typedef struct Dicsoseg {
+    char nev[40];
+    char nyeremeny[40];
+    char ido[60];
+} Dicsoseg;
 
-
+Kerdesek *beolvasas(int *meret);
+void jatekosteljesitmenye(int ny, char *nev, int perc, int mp);
+void dicsoseglista(void);
+void szabalyok(void);
+void jatekvege(int idoeleje, int nyeremeny, Kerdesek *eleje);
+Kerdesek *kerdeskivalaszt(Kerdesek *eleje, int nehezsegiszint, int meret);
+void kerdeskiir(Kerdesek *mozgo);
+char segitseg(char betu, Kerdesek *mozgo);
+bool helyes_e(char betu, Kerdesek *mozgo, int *ny, int *p);
+void felszabadit(Kerdesek *eleje);
 #endif
 
