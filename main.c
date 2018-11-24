@@ -22,13 +22,13 @@ int main(void)
         menukirajzol();
 
         printf(" Sorszám: ");
-        int szam;
-        scanf("%d", &szam);
+        char menupont;
+        scanf(" %c", &menupont);
         printf("\n");
 
-        switch(szam)
+        switch(menupont)
         {
-        case 1:
+        case '1':
         {
             int idoeleje;
             int nyeremeny = 0;
@@ -46,16 +46,24 @@ int main(void)
             if (eleje == NULL)
                 return 1;
             printf(" Válasszon nehézségi szintet! 1 - 3: ");
-            int nehezsegiszint;
-            scanf("%d", &nehezsegiszint);
+            char nehezsegiszint = 0;
+            scanf(" %c", &nehezsegiszint);
+            while (nehezsegiszint != '1' && nehezsegiszint != '2' && nehezsegiszint != '3')
+            {
+                printf(" Kérem 1 és 3 között adjon meg egy számot!\n\n");
+                scanf(" %c", &nehezsegiszint);
+            }
+
             printf("\n");
             srand(time(0));
             int kor = 0;
             int random;
+            bool korvege = false;
+            bool helytelenvalasz = false;
 
-
-            while (kor != 15)
+            while (kor != 15 && !helytelenvalasz)
             {
+                korvege = false;
                 printf(" %d. kérdés:\n\n", kor+1);
                 mozgo = kerdeskivalaszt(eleje, nehezsegiszint, meret);
                 kerdeskiir(mozgo);
@@ -68,68 +76,48 @@ int main(void)
                     printf(" F: Felezés\n\n");
                 }
                 /*printf("%c\n\n", mozgo->valasz);*/
-                printf(" Helyes válasz betűjele: ");
-                char betu;
-                scanf(" %c", &betu);
-                printf("\n\n");
-                if (betu == 'E' || betu == 'F')
+
+                while (!korvege)
                 {
-                    sikertelen = true;
-                    x = 0;
-                    while(sikertelen)
+                    printf(" Kérem adja meg a választott opciót: \n");
+                    char betu;
+                    scanf(" %c", &betu);
+                    printf("\n\n");
+
+                    if (betu == 'e' || betu == 'E' || betu == 'f' || betu == 'F')
                     {
-                        if (x != 0)
+                        segitseg(betu, mozgo, &felhasznaltE, &felhasznaltF);
+                    }
+                    else if (betu == 'A' || betu == 'B' || betu == 'C' || betu == 'D' ||
+                             betu == 'a' || betu == 'b' || betu == 'c' || betu == 'd')
+                    {
+                        if (!helyes_e(betu, mozgo, &nyeremeny, &penz))
                         {
-                            printf(" Felhasználtad már a segítséget!\n");
-                            printf(" Új válasz: ");
-                            scanf(" %c", &betu);
+                            helytelenvalasz = true;
                         }
-                        if ((betu == 'E') && !felhasznaltE)
-                        {
-                            betu = segitseg(betu, mozgo);
-                            felhasznaltE = true;
-                            sikertelen = false;
-                        }
-                        if ((betu == 'F') && !felhasznaltF)
-                        {
-                            betu = segitseg(betu, mozgo);
-                            felhasznaltF = true;
-                            sikertelen = false;
-                        }
-                        if (betu == 'A' || betu == 'B' || betu == 'C' || betu == 'D')
-                        {
-                            sikertelen = false;
-                        }
-                        ++x;
+                        korvege = true;
+                        ++kor;
+                    }
+                    else
+                    {
+                        printf(" Nem megengedett válasz! Kérem adjon meg egy újabbat!\n\n");
                     }
                 }
-                if (!helyes_e(betu, mozgo, &nyeremeny, &penz))
-                {
-                    printf(" Rossz válasz! Vége a játéknak!\n\n");
-                    printf(" Ez volt a helyes válasz: ");
-                    printf(" %c\n\n", mozgo->valasz);
-                    jatekvege(idoeleje, nyeremeny, eleje);
-                    tovabb = true;
-                    kor = 15;
-                }
-                if (!tovabb)
-                    ++kor;
             }
-            if (!tovabb)
-                jatekvege(idoeleje, nyeremeny, eleje);
+            jatekvege(idoeleje, nyeremeny, eleje);
         }
         break;
-        case 2:
+        case '2':
             szabalyok();
             break;
-        case 3:
+        case '3':
             dicsoseglista();
             break;
-        case 4:
+        case '4':
             return 0;
             break;
         default:
-            return 1;
+            printf(" Kérem a fenti 4 lehetőség valamelyikét adja meg!\n\n");
         }
     }
     return 0;

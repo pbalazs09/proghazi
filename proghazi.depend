@@ -1,10 +1,12 @@
 # depslib dependency file v1.0
-1541352896 source:d:\programok\proghazi\main.c
+1543079119 source:d:\programok\proghazi\main.c
 	<stdio.h>
 	<stdlib.h>
-	"beolvasas.h"
+	<stdbool.h>
 	"menu.h"
 	"jatekmukodes.h"
+	<time.h>
+	"debugmalloc.h"
 	<windows.h>
 
 1541341750 source:d:\programok\proghazi\beolvasas.c
@@ -17,23 +19,37 @@
 
 1541330195 d:\programok\proghazi\menu.h
 
-1541368480 source:d:\programok\proghazi\menu.c
+1543068934 source:d:\programok\proghazi\menu.c
 	<stdio.h>
 	<stdlib.h>
-	"beolvasas.h"
 	"menu.h"
 	"jatekmukodes.h"
+	"debugmalloc.h"
 	<windows.h>
 
-1541352735 d:\programok\proghazi\jatekmukodes.h
+1543078907 d:\programok\proghazi\jatekmukodes.h
 	<stdbool.h>
 
-1541368612 source:d:\programok\proghazi\jatekmukodes.c
+1543078907 source:d:\programok\proghazi\jatekmukodes.c
 	<stdio.h>
 	<stdlib.h>
-	"beolvasas.h"
 	"menu.h"
 	"jatekmukodes.h"
 	<time.h>
+	<stdbool.h>
+	"debugmalloc.h"
+
+1542571296 source:d:\programok\proghazi\debugmalloc.c
+	<stdbool.h>
+	<stdlib.h>
+	<stdio.h>
+	<ctype.h>
+	<string.h>
+	<time.h>
+	<stdarg.h>
+	"debugmalloc.h"
+
+1542571297 d:\programok\proghazi\debugmalloc.h
+	<stdlib.h>
 	<stdbool.h>
 

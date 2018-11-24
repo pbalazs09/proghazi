@@ -25,9 +25,9 @@ void jatekosteljesitmenye(int ny, char *nev, int perc, int mp);
 void dicsoseglista(void);
 void szabalyok(void);
 void jatekvege(int idoeleje, int nyeremeny, Kerdesek *eleje);
-Kerdesek *kerdeskivalaszt(Kerdesek *eleje, int nehezsegiszint, int meret);
+Kerdesek *kerdeskivalaszt(Kerdesek *eleje, char nehezsegiszint, int meret);
 void kerdeskiir(Kerdesek *mozgo);
-char segitseg(char betu, Kerdesek *mozgo);
+void segitseg(char betu, Kerdesek *mozgo, bool *felhasznaltE, bool *felhasznaltF);
 bool helyes_e(char betu, Kerdesek *mozgo, int *ny, int *p);
 void felszabadit(Kerdesek *eleje);
 #endif

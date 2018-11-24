@@ -121,66 +121,63 @@ void szabalyok(void) {
 printf("Minden kérdésre egy helyes válasz van!\n2 segítség közül lehet választani, mindegyik csak egyszer használható fel!\nJó válasz esetén tovább léphetünk a következő kérdésre, rossz válasz esetén azonban vége a játéknak.\nA kérdéshez tartozó betűjel beírásával adhatjuk meg válaszunkat.\n");
 }
 
-char segitseg(char betu, Kerdesek *mozgo)
+void segitseg(char betu, Kerdesek *mozgo, bool *felhasznaltE, bool *felhasznaltF)
 {
-    if (betu == 'E')
+    if (betu == 'E' || betu == 'e')
     {
-        int tipp;
-        tipp = rand()%100+1;
-        if (tipp == 13 || tipp == 69)
+        if (!(*felhasznaltE))
         {
-            if (mozgo->valasz == 'A')
-                printf(" A közönség tippje: B");
-            if (mozgo->valasz == 'B')
-                printf(" A közönség tippje: C");
-            if (mozgo->valasz == 'C')
-                printf(" A közönség tippje: D");
-            if (mozgo->valasz == 'D')
-                printf(" A közönség tippje: A");
+            *felhasznaltE = true;
+            int tipp;
+            tipp = rand()%100;
+            if (tipp < 10)
+            {
+                if (mozgo->valasz == 'A')
+                    printf(" A közönség tippje: B");
+                if (mozgo->valasz == 'B')
+                    printf(" A közönség tippje: C");
+                if (mozgo->valasz == 'C')
+                    printf(" A közönség tippje: D");
+                if (mozgo->valasz == 'D')
+                    printf(" A közönség tippje: A");
+            }
+            printf(" A közönség tippje: %c\n\n", mozgo->valasz);
         }
-        printf(" A közönség tippje: %c\n\n", mozgo->valasz);
-        printf(" Helyes válasz betűjele: ");
-        scanf(" %c", &betu);
-        printf("\n");
-        return betu;
+        else
+        {
+            printf(" Felhasználtad már ezt a segítséget!\n");
+        }
     }
-    if (betu == 'F')
+    else if (betu == 'F' || betu == 'f')
     {
-        if (mozgo->valasz == 'A')
+        if (!(*felhasznaltF))
         {
-            printf(" A: %s\n", mozgo->a);
-            printf(" C: %s\n\n", mozgo->c);
-            printf(" Helyes válasz betűjele: ");
-            scanf(" %c", &betu);
-            printf("\n");
-            return betu;
+            *felhasznaltF = true;
+
+            if (mozgo->valasz == 'A')
+            {
+                printf(" A: %s\n", mozgo->a);
+                printf(" C: %s\n\n", mozgo->c);
+            }
+            if (mozgo->valasz == 'B')
+            {
+                printf(" A: %s\n", mozgo->a);
+                printf(" B: %s\n\n", mozgo->b);
+            }
+            if (mozgo->valasz == 'C')
+            {
+                printf(" A: %s\n", mozgo->a);
+                printf(" C: %s\n\n", mozgo->c);
+            }
+            if (mozgo->valasz == 'D')
+            {
+                printf(" B: %s\n", mozgo->b);
+                printf(" D: %s\n\n", mozgo->d);
+            }
         }
-        if (mozgo->valasz == 'B')
+        else
         {
-            printf(" A: %s\n", mozgo->a);
-            printf(" B: %s\n\n", mozgo->b);
-            printf(" Helyes válasz betűjele: ");
-            scanf(" %c", &betu);
-            printf("\n");
-            return betu;
-        }
-        if (mozgo->valasz == 'C')
-        {
-            printf(" A: %s\n", mozgo->a);
-            printf(" C: %s\n\n", mozgo->c);
-            printf(" Helyes válasz betűjele: ");
-            scanf(" %c", &betu);
-            printf("\n");
-            return betu;
-        }
-        if (mozgo->valasz == 'D')
-        {
-            printf(" B: %s\n", mozgo->b);
-            printf(" D: %s\n\n", mozgo->d);
-            printf(" Helyes válasz betűjele: ");
-            scanf(" %c", &betu);
-            printf("\n");
-            return betu;
+            printf(" Felhasználtad már ezt a segítséget!\n");
         }
     }
 }
@@ -193,12 +190,20 @@ bool helyes_e(char betu, Kerdesek *mozgo, int *ny, int *p)
         printf(" Helyes válasz!\n");
         printf(" ===============\n\n");
         printf(" -----------------------------------------------------------------\n\n");
+
         *ny = *ny + *p;
         *p = *p*2;
+
         return true;
     }
     else
+    {
+        printf(" Rossz válasz! Vége a játéknak!\n\n");
+        printf(" Ez volt a helyes válasz: ");
+        printf(" %c\n\n", mozgo->valasz);
+
         return false;
+    }
 }
 
 void jatekvege(int idoeleje, int nyeremeny, Kerdesek *eleje) {
@@ -217,12 +222,12 @@ void jatekvege(int idoeleje, int nyeremeny, Kerdesek *eleje) {
             felszabadit(eleje);
 }
 
-Kerdesek *kerdeskivalaszt(Kerdesek *eleje, int nehezsegiszint, int meret) {
+Kerdesek *kerdeskivalaszt(Kerdesek *eleje, char nehezsegiszint, int meret) {
         Kerdesek *mozgo = eleje;
         int random = rand()%meret;
         for (int i = 0; i < random; ++i)
             mozgo = mozgo->kov;
-        if (nehezsegiszint == 1)
+        if (nehezsegiszint == '1')
         {
             while ((mozgo->nehezseg != 1) && (mozgo->nehezseg != 2) && (mozgo->nehezseg != 3) && (mozgo->nehezseg != 4) && (mozgo->nehezseg != 5))
             {
@@ -233,7 +238,7 @@ Kerdesek *kerdeskivalaszt(Kerdesek *eleje, int nehezsegiszint, int meret) {
             }
             return mozgo;
         }
-        if (nehezsegiszint == 2)
+        else if (nehezsegiszint == '2')
         {
             while ((mozgo->nehezseg != 6) && (mozgo->nehezseg != 7) && (mozgo->nehezseg != 8) && (mozgo->nehezseg != 9) && (mozgo->nehezseg != 10))
             {
@@ -244,7 +249,7 @@ Kerdesek *kerdeskivalaszt(Kerdesek *eleje, int nehezsegiszint, int meret) {
             }
             return mozgo;
         }
-        if (nehezsegiszint == 3)
+        else if (nehezsegiszint == '3')
         {
             while ((mozgo->nehezseg != 11) && (mozgo->nehezseg != 12) && (mozgo->nehezseg != 13) && (mozgo->nehezseg != 14) && (mozgo->nehezseg != 15))
             {
@@ -253,6 +258,10 @@ Kerdesek *kerdeskivalaszt(Kerdesek *eleje, int nehezsegiszint, int meret) {
                 for (int i = 0; i < random; ++i)
                     mozgo = mozgo->kov;
             }
+            return mozgo;
+        }
+        else
+        {
             return mozgo;
         }
 }
