@@ -5,6 +5,7 @@
 #include "jatekmukodes.h"
 #include <time.h>
 #include "debugmalloc.h"
+#include "beolvasas.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif

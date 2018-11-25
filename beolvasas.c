@@ -1,25 +1,53 @@
-/*#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include "beolvasas.h"
 #include "menu.h"
 #include "jatekmukodes.h"
+#include <time.h>
+#include <stdbool.h>
+#include "debugmalloc.h"
+#include "beolvasas.h"
 
-
-int beolvasas(void)
+Kerdesek *beolvasas(int *meret)
 {
-    FILE *fp; /* f·jl mutatÛ (file pointer/handle) */
-
-    /*fp = fopen("loim.txt", "rt"); /* megnyit·s */
-    /*if (fp == NULL)
+    FILE *fp; /* f√°jl mutat√≥ (file pointer/handle) */
+    fp = fopen("loim.txt", "rt"); /* megnyit√°s */
+    if (fp == NULL)
     {
-        perror("F·jl megnyit·sa sikertelen"); /* nem folytathatjuk! */
-       /* return 1;
+        perror("F√°jl megnyit√°sa sikertelen"); /* nem folytathatjuk! */
+        return NULL;
     }
-    Kerdesek beolvas[5000];
-    int i = 0;
-    while ((fscanf(fp, "%d\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t]\t%c\t%[^\n]\n", &beolvas[i].nehezseg, beolvas[i].kerdes, beolvas[i].a, beolvas[i].b, beolvas[i].c, beolvas[i].d, &beolvas[i].valasz, beolvas[i].temakor)) != EOF) /* beolvas·s a f·jl vÈgÈig */
-       /* ++i;
-    fclose(fp);   /* bez·r·s */
-    /*return 0;
-}*/
 
+    int i = 1;
+    int ch = 0;
+    while (!feof(fp)) {
+        ch = fgetc(fp);
+        if(ch == '\n')
+            ++i;
+    }
+    fclose(fp);   /* bez√°r√°s */
+
+    *meret = i;
+
+    fp = fopen("loim.txt", "rt"); /* megnyit√°s */
+    if (fp == NULL)
+    {
+        perror("F√°jl megnyit√°sa sikertelen"); /* nem folytathatjuk! */
+        return NULL;
+    }
+
+
+    Kerdesek *lis = NULL;
+    for (int i = 0; i < *meret+1; i++) {
+        Kerdesek *uj;
+        uj = (Kerdesek*) malloc(sizeof(Kerdesek));
+        uj->kov = lis;
+        lis = uj;
+    }
+    Kerdesek *eleje;
+    eleje = lis;
+    Kerdesek *mozgo = eleje;
+    while ((fscanf(fp, "%d\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t]\t%c\t%[^\n]\n", &mozgo->nehezseg, mozgo->kerdes, mozgo->a, mozgo->b, mozgo->c, mozgo->d, &mozgo->valasz, mozgo->temakor)) != EOF) /* beolvas√°s a f√°jl v√©g√©ig */
+            mozgo = mozgo->kov;
+    fclose(fp);   /* bez√°r√°s */
+    return eleje;
+}

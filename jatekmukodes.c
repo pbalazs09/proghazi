@@ -5,51 +5,9 @@
 #include <time.h>
 #include <stdbool.h>
 #include "debugmalloc.h"
-
-Kerdesek *beolvasas(int *meret)
-{
-    FILE *fp; /* fájl mutató (file pointer/handle) */
-    fp = fopen("loim.txt", "rt"); /* megnyitás */
-    if (fp == NULL)
-    {
-        perror("Fájl megnyitása sikertelen"); /* nem folytathatjuk! */
-        return NULL;
-    }
-
-    int i = 1;
-    int ch = 0;
-    while (!feof(fp)) {
-        ch = fgetc(fp);
-        if(ch == '\n')
-            ++i;
-    }
-    fclose(fp);   /* bezárás */
-
-    *meret = i;
-
-    fp = fopen("loim.txt", "rt"); /* megnyitás */
-    if (fp == NULL)
-    {
-        perror("Fájl megnyitása sikertelen"); /* nem folytathatjuk! */
-        return NULL;
-    }
+#include "beolvasas.h"
 
 
-    Kerdesek *lis = NULL;
-    for (int i = 0; i < *meret+1; i++) {
-        Kerdesek *uj;
-        uj = (Kerdesek*) malloc(sizeof(Kerdesek));
-        uj->kov = lis;
-        lis = uj;
-    }
-    Kerdesek *eleje;
-    eleje = lis;
-    Kerdesek *mozgo = eleje;
-    while ((fscanf(fp, "%d\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t]\t%c\t%[^\n]\n", &mozgo->nehezseg, mozgo->kerdes, mozgo->a, mozgo->b, mozgo->c, mozgo->d, &mozgo->valasz, mozgo->temakor)) != EOF) /* beolvasás a fájl végéig */
-            mozgo = mozgo->kov;
-    fclose(fp);   /* bezárás */
-    return eleje;
-}
 
 void felszabadit(Kerdesek *eleje) {
     Kerdesek *mozgo = eleje;
@@ -133,15 +91,18 @@ void segitseg(char betu, Kerdesek *mozgo, bool *felhasznaltE, bool *felhasznaltF
             if (tipp < 10)
             {
                 if (mozgo->valasz == 'A')
-                    printf(" A közönség tippje: B");
+                    printf(" A közönség tippje: B\n\n");
                 if (mozgo->valasz == 'B')
-                    printf(" A közönség tippje: C");
+                    printf(" A közönség tippje: C\n\n");
                 if (mozgo->valasz == 'C')
-                    printf(" A közönség tippje: D");
+                    printf(" A közönség tippje: D\n\n");
                 if (mozgo->valasz == 'D')
-                    printf(" A közönség tippje: A");
+                    printf(" A közönség tippje: A\n\n");
             }
-            printf(" A közönség tippje: %c\n\n", mozgo->valasz);
+            else
+            {
+                printf(" A közönség tippje: %c\n\n", mozgo->valasz);
+            }
         }
         else
         {

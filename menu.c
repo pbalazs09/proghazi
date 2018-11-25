@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "jatekmukodes.h"
 #include "debugmalloc.h"
+#include "beolvasas.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif

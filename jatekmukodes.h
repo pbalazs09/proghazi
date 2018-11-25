@@ -20,7 +20,6 @@ typedef struct Dicsoseg {
     char ido[60];
 } Dicsoseg;
 
-Kerdesek *beolvasas(int *meret);
 void jatekosteljesitmenye(int ny, char *nev, int perc, int mp);
 void dicsoseglista(void);
 void szabalyok(void);
